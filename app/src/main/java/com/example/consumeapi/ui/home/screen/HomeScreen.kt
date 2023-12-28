@@ -38,9 +38,10 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.consumeapi.R
 import com.example.consumeapi.model.Kontak
 import com.example.consumeapi.navigation.DestinasiNavigasi
-import com.example.consumeapi.ui.PenyediaViewModel
 import com.example.consumeapi.ui.home.HomeViewModel
 import com.example.consumeapi.ui.home.KontakUIState
+import com.example.consumeapi.ui.home.viewmodel.PenyediaViewModel
+import com.example.consumeapi.ui.theme.TopAppBarKontak
 
 @Composable
 fun HomeStatus(

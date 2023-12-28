@@ -27,3 +27,10 @@ data class InsertUiEvent(
     val alamat: String = "",
     val nohp: String = ""
 )
+
+fun InsertUiEvent.toKontak() : Kontak = Kontak(
+    id = id,
+    nama = nama,
+    alamat = alamat,
+    nohp = nohp,
+)

@@ -34,3 +34,7 @@ fun InsertUiEvent.toKontak() : Kontak = Kontak(
     alamat = alamat,
     nohp = nohp,
 )
+
+data class InsertUiState(
+    val insertUiEvent: InsertUiEvent = InsertUiEvent()
+)

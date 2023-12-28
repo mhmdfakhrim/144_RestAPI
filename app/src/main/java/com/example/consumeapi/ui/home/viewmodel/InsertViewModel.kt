@@ -1,6 +1,13 @@
 package com.example.consumeapi.ui.home.viewmodel
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.example.consumeapi.model.Kontak
 import com.example.consumeapi.repository.KontakRepository
+import kotlinx.coroutines.launch
 
 class InsertViewModel(private val kontakRepository: KontakRepository) : ViewModel() {
     var insertKontakState by mutableStateOf(InsertUiState())
@@ -37,4 +44,15 @@ fun InsertUiEvent.toKontak() : Kontak = Kontak(
 
 data class InsertUiState(
     val insertUiEvent: InsertUiEvent = InsertUiEvent()
+)
+
+fun Kontak.toInsertUiEvent(): InsertUiEvent = InsertUiEvent(
+    id = id,
+    nama = nama,
+    alamat = alamat,
+    nohp = nohp
+)
+
+fun Kontak.toUiStateKontak(): InsertUiState = InsertUiState(
+    insertUiEvent = toInsertUiEvent()
 )

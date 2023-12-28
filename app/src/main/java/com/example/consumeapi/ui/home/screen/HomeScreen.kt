@@ -7,16 +7,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,13 +34,30 @@ import com.example.consumeapi.model.Kontak
 import com.example.consumeapi.ui.home.viewmodel.KontakUIState
 
 @Composable
-fun HomeScreen(
-    kontakUIState: KontakUIState,retryAction: () -> Unit, modifier: Modifier = Modifier
+fun HomeStatus(
+    kontakUIState: KontakUIState,
+    retryAction: () -> Unit,
+    modifier: Modifier = Modifier,
+    onDeleteClick: (Kontak) -> Unit = {},
+    onDetailClick: (Int) -> Unit
 ){
-    when (kontakUIState) {
-        is KontakUIState.Loading -> OnLoading
+    when (kontakUIState){
+        is KontakUIState.Loading -> OnLoading(modifier = modifier.fillMaxSize())
+        is KontakUIState.Success -> KontakLayout(
+            kontak = kontakUIState.kontak,
+            modifier = modifier.fillMaxWidth(),
+            onDetailClick = {
+                onDetailClick(it.id)
+            },
+            onDeleteClick = {
+                onDeleteClick(it)
+            }
+        )
+        is KontakUIState.Error -> OnError(retryAction, modifier = modifier.fillMaxSize())
+        else -> {}
     }
 }
+
 @Composable
 fun OnError(retryAction: () -> Unit, modifier: Modifier = Modifier) {
     Column (
@@ -55,10 +75,21 @@ fun OnError(retryAction: () -> Unit, modifier: Modifier = Modifier) {
         }
     }
 }
+
+@Composable
+fun OnLoading(modifier: Modifier = Modifier){
+    Image(
+        modifier = modifier.size(200.dp),
+        painter = painterResource(id = R.drawable.loading_img),
+        contentDescription = stringResource(id = R.string.Loading)
+    )
+}
 @Composable
 fun KontakLayout(
     kontak: List<Kontak>,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onDetailClick: (Kontak) -> Unit,
+    onDeleteClick: (Kontak) -> Unit
 
 ){
     LazyColumn(
@@ -70,48 +101,59 @@ fun KontakLayout(
                 kontak ->
             KontakCard(
                 kontak = kontak,
-                modifier = Modifier.fillMaxWidth()
-                                )
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .clickable { onDetailClick(kontak) },
+                    onDeleteClick = {
+                    onDeleteClick(kontak)
+                }
+            )
         }
     }
 }
 
+
+
 @Composable
 fun KontakCard(
     kontak: Kontak,
+    onDeleteClick: (Kontak) -> Unit = {},
     modifier: Modifier = Modifier
 ){
     Card(
         modifier = modifier,
+        shape = MaterialTheme.shapes.medium,
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)
     ){
         Column(
-            modifier = Modifier.padding(dimensionResource(id = R.dimen.padding_Large)),
-            verticalArrangement = Arrangement.spacedBy(dimensionResource(id = R.dimen.padding_small))
+            modifier = Modifier.padding(12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
         ){
             Row(
                 modifier = Modifier.fillMaxWidth()
-            ){
+            ) {
                 Text(
                     text = kontak.nama,
                     style = MaterialTheme.typography.titleLarge,
                 )
                 Spacer(Modifier.weight(1f))
-                Icon(imageVector = Icons.Default.Phone,
-                    contentDescription = null,
+                IconButton(onClick = { onDeleteClick(kontak) }) {
+                    Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = null
+                    )
+                }
+                Text(
+                    text = kontak.nohp,
+                    style = MaterialTheme.typography.titleMedium
                 )
+            }
                 Text(
                     text = kontak.alamat,
                     style = MaterialTheme.typography.titleMedium
 
                 )
-                Spacer(Modifier.weight(1f))
-                Text(
-                    text = kontak.nohp,
-                    style = MaterialTheme.typography.titleMedium
 
-                )
-            }
         }
     }
 }

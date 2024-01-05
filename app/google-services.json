@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "617477245437",
+    "project_id": "consumeapi-86aa8",
+    "storage_bucket": "consumeapi-86aa8.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:617477245437:android:d5a100987611ae03657194",
+        "android_client_info": {
+          "package_name": "com.example.consumeapi"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDvzzt7_70NMEmF4H1hpDdRvDaYJwQXd3M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
